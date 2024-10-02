@@ -26,6 +26,20 @@ The app uses:
 - [Pinecone API Key](https://www.pinecone.io/)
 - [Sarvam Text-to-Speech API Key](https://sarvam.ai/)
 
+
+## Document Indexer
+
+The repository also includes a document indexing utility that allows you to index PDF documents into a Pinecone vector store using LangChain. This tool splits PDF files into smaller chunks, generates embeddings for the chunks, and stores them in the Pinecone index.
+
+### How It Works
+
+The `index_document()` function takes the path to a PDF document, processes it by splitting it into smaller chunks, and then generates embeddings using a pre-configured model. These embeddings are stored in a Pinecone index.
+
+### Usage
+```bash
+python document_indexer.py --filepath path/to/your/document.pdf
+```
+
 ## Installation
 
 ### Using Docker

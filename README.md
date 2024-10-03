@@ -19,6 +19,14 @@ The app uses:
 - **RAG Pipeline**: Combines document retrieval with state-of-the-art language models.
 - **Two modes**: `basic` and `agentic`, accessible through API endpoints or a Gradio interface.
 
+
+## Agentic RAG System Workflow
+
+The following image illustrates the workflow of the Agentic RAG System:
+
+![Agentic RAG System Workflow](./agentic_rag_workflow.png)
+
+
 ## Requirements
 
 - Python 3.9+

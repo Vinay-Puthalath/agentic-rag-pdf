@@ -83,7 +83,7 @@ async def predict_rag(question:str, history=None)->str:
 
     generation = qa_rag_chain.invoke({"context": documents, "question": question})
     # print('generation::', generation)
-    play_sound(generation)
+    audio_path = play_sound(generation)
     
-    return generation
+    return generation, audio_path
 

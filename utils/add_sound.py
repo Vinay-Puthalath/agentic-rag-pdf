@@ -3,6 +3,7 @@ import os
 import requests
 import base64
 from pydub import AudioSegment
+import tempfile
 from pydub.playback import play
 from io import BytesIO
 from dotenv import load_dotenv
@@ -10,6 +11,14 @@ from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
+
+# Function to process the audio and save it as a file
+def process_audio(sound):
+    audio_segment = sound
+
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_wav:
+        audio_segment.export(temp_wav.name, format="wav")
+        return temp_wav.name  
 
 
 def play_sound(text):
@@ -67,7 +76,9 @@ def play_sound(text):
 
             # Play the audio directly from memory
             sound = AudioSegment.from_wav(audio_io)
-            play_audio_if_possible(sound)
+            audio_path = process_audio(sound)
+
+            return audio_path
 
         else:
             print("Error: No audio generated in the response.")

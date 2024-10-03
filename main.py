@@ -1,9 +1,9 @@
 import gradio as gr
 from pydantic import BaseModel
+import tempfile
+from fastapi import FastAPI
 from utils.agentic_inference import predict_agentic_rag
 from utils.inference import predict_rag
-from fastapi import FastAPI
-
 
 app = FastAPI()
 
@@ -26,29 +26,43 @@ async def predict_api(prompt:Request):
     return response
 
 
-demo_rag = gr.ChatInterface(
-    fn=predict_rag,
-    textbox=gr.Textbox(
-        placeholder="Ask a question", container=False,lines=1,scale=8
-    ),
-    title="BASIC RAG APP",
-    undo_btn="Delete Previous",
-    clear_btn="Clear",
-)
+with gr.Blocks() as demo_rag:
 
-demo_agentic_rag = gr.ChatInterface(
-    fn=predict_agentic_rag,
-    textbox=gr.Textbox(
-        placeholder="Ask a question", container=False,lines=1,scale=8
-    ),
-    title="SMART RAG AGENT APP",
-    undo_btn="Delete Previous",
-    clear_btn="Clear",
-)
+    text_input = gr.Textbox(
+        placeholder="Ask a question", lines=1, scale=8, label="Ask a question"
+    )
+    text_output = gr.Textbox(label="Text Response")
+
+    audio_output = gr.Audio(type="filepath", label="Audio Response")
+
+    async def handle_chat_and_audio(text):
+        response_text, audio_path = await predict_rag(text)  
+        return response_text, audio_path  
+
+    submit_btn = gr.Button("Submit")
+
+    submit_btn.click(fn=handle_chat_and_audio, inputs=text_input, outputs=[text_output, audio_output])
+
+with gr.Blocks() as demo_agentic_rag:
+    
+    text_input = gr.Textbox(
+        placeholder="Ask a question", lines=1, scale=8, label="Ask a question"
+    )
+
+    text_output = gr.Textbox(label="Text Response")
 
 
+    audio_output = gr.Audio(type="filepath", label="Audio Response")
 
 
+    async def handle_chat_and_audio(text):
+        response_text, audio_path = await predict_agentic_rag(text)
+        return response_text, audio_path 
+
+    submit_btn = gr.Button("Submit")
+
+
+    submit_btn.click(fn=handle_chat_and_audio, inputs=text_input, outputs=[text_output, audio_output])
 
 
 if __name__ == "__main__":

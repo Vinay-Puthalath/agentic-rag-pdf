@@ -30,7 +30,7 @@ async def predict_agentic_rag(qns:str, history=None)->str:
     agentic_rag = create_rag_agent()
 
     response = agentic_rag.invoke({"question": qns})
-    play_sound(response['generation'])
+    audio_path = play_sound(response['generation'])
     
-    return response['generation']
+    return response['generation'], audio_path
 

@@ -1,14 +1,14 @@
-""" Handles creatting an agentic rag model """
+""" 
+Handles creatting an agentic rag model 
+"""
 from langgraph.graph import END, StateGraph
-from agent_utils.graphstate import GraphState
-from agent_utils.retriever import retrieve
-from agent_utils.retrieval_grader import grade_documents
-from agent_utils.query_rephraser import rewrite_query
-from agent_utils.websearch import decide_to_generate, web_search, decide_trivial
-from agent_utils.qa_rag_chain import generate_answer
-from agent_utils.query_classifier import is_trivial_query
-
-
+from agent_utils.graphstate.graphstate import GraphState
+from agent_utils.retriever.retriever import retrieve
+from agent_utils.retriever.retrieval_grader import grade_documents
+from agent_utils.query.query_rephraser import rewrite_query
+from agent_utils.query.query_classifier import is_trivial_query
+from agent_utils.search.websearch import decide_to_generate, web_search, decide_trivial
+from agent_utils.rag_chain.qa_rag_chain import generate_answer
 
 def create_rag_agent():
 
@@ -50,10 +50,4 @@ def create_rag_agent():
     # Compile
     agentic_rag = agentic_rag.compile()
 
-
-
-    # query = "who is arsenal's captain?"
-    # response = agentic_rag.invoke({"question": query})
-
-    # print(response['generation'])
     return agentic_rag

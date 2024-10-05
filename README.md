@@ -45,7 +45,7 @@ The `index_document()` function takes the path to a PDF document, processes it b
 
 ### Usage
 ```bash
-python document_indexer.py --filepath path/to/your/document.pdf
+python indexer/document_indexer.py --filepath path/to/your/document.pdf
 ```
 
 ## Installation

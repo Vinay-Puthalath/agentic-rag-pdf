@@ -9,9 +9,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_pinecone import PineconeVectorStore, PineconeEmbeddings 
 from langchain_openai import ChatOpenAI
-from utils.add_sound import play_sound
-
-
+from utils.audio.add_sound import play_sound
 
 async def predict_rag(question:str, history=None)->str:
 
@@ -27,7 +25,6 @@ async def predict_rag(question:str, history=None)->str:
     :rtype: str
     """
 
-    print("prompt :::", question)
     if not asyncio.get_event_loop().is_running():
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
@@ -82,7 +79,7 @@ async def predict_rag(question:str, history=None)->str:
     )
 
     generation = qa_rag_chain.invoke({"context": documents, "question": question})
-    # print('generation::', generation)
+
     audio_path = play_sound(generation)
     
     return generation, audio_path

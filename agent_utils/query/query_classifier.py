@@ -1,4 +1,7 @@
-""" Handles classifying trivial and non-trivial queries """
+"""
+Handles classifying trivial and non-trivial queries.
+"""
+
 from langchain.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 
@@ -11,7 +14,7 @@ You are a smart assistant. Your job is to classify whether a user's query is tri
 
 A trivial query is one that involves greetings, small talk, farewells, or short affirmations.
 
-If the query is trivial, respond with "trivial". If the query requires more complex processing, respond with "non-trivial".
+If the query is trivial, respond with 'trivial'. If the query requires more complex processing, respond with 'non-trivial'.
 """
 
 # ChatPromptTemplate to format the interaction
@@ -22,7 +25,7 @@ classifier_prompt = ChatPromptTemplate.from_messages(
         Here is the initial question:
         {question}
 
-        If the query is trivial, respond with "trivial". If the query requires more complex processing, respond with "non-trivial".
+        If the query is trivial, respond with 'trivial'. If the query requires more complex processing, respond with 'non-trivial'.
         """),
     ]
 )
@@ -55,8 +58,9 @@ def is_trivial_query(state):
         print("---question---", question, "---class--", classification)
 
         # Return updated state with classification
-        return {"is_trivial": classification , "question": question, "documents": []}
+        return {"is_trivial": classification, "question": question, "documents": []}
+    
     except Exception as e:
         print(f"Error during classification: {e}")
-        # return {"error": "Classification failed", "question": question}
-
+        # Return a fallback state or log the error
+        return {"is_trivial": "unknown", "question": question, "documents": []}

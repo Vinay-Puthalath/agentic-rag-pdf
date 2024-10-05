@@ -1,4 +1,6 @@
-""" Handles providing a voice to the generation/text using SARVAM's text-to-speech api"""
+""" 
+Handles providing a voice to the generation/text using SARVAM's text-to-speech api
+"""
 import os
 import requests
 import base64
@@ -26,7 +28,6 @@ def play_sound(text):
     Sends a text input to the Sarvam API for text-to-speech conversion, receives the audio response, 
     and plays it if the request is successful.
 
-
     :param text: The input text to be converted to speech.
     :type text: str
     :return: None
@@ -46,17 +47,6 @@ def play_sound(text):
         "api-subscription-key": os.getenv("SARVAM_API_KEY"),
         "Content-Type": "application/json",
     }
-
-    def is_docker():
-        """Check if the code is running inside a Docker container."""
-        path = '/.dockerenv'
-        return os.path.exists(path)
-
-    def play_audio_if_possible(audio_segment):
-        if not is_docker():
-            play(audio_segment)
-        else:
-            print("Skipping audio playback inside Docker.")
 
     # Request to Sarvam API
     response = requests.post(url, json=payload, headers=headers)
@@ -84,5 +74,3 @@ def play_sound(text):
             print("Error: No audio generated in the response.")
     else:
         print(f"Error: {response.status_code}, {response.text}")
-
-# play_sound(" How are you doing ?")

@@ -1,21 +1,27 @@
-""" Handles the websearch component """
+"""
+Handles the websearch component
+"""
+
 from langchain.schema import Document
 from langchain_community.tools.tavily_search import TavilySearchResults
 
-tv_search = TavilySearchResults(max_results=3, search_depth='advanced',
-                                max_tokens=10000)
+# Initialize Tavily search results
+tv_search = TavilySearchResults(
+    max_results=3, 
+    search_depth='advanced',
+    max_tokens=10000
+)
 
 def decide_to_generate(state):
     """
     Determines whether to generate an answer, or re-generate a question.
 
     Args:
-        state (dict): The current graph state
+        state (dict): The current graph state.
 
     Returns:
-        str: Binary decision for next node to call
+        str: Binary decision for the next node to call.
     """
-
     print("---ASSESS GRADED DOCUMENTS---")
     web_search_needed = state["web_search_needed"]
 
@@ -31,26 +37,20 @@ def decide_to_generate(state):
 
 def decide_trivial(state):
     """
-    Determines whether to generate an answer, or re-generate a question.
+    Determines whether the query is trivial or not.
 
     Args:
-        state (dict): The current graph state
+        state (dict): The current graph state.
 
     Returns:
-        str: Binary decision for next node to call
+        str: Decision based on the triviality of the query.
     """
-
-    # print("---ASSESS GRADED DOCUMENTS---")
     is_trivial = state["is_trivial"]
 
     if is_trivial == "trivial":
-        # All documents have been filtered check_relevance
-        # We will re-generate a new query
         print("---TRIVIAL QUERY---")
-        
         return "generate_answer"
     else:
-        # We have relevant documents, so generate answer
         print("---NON TRIVIAL QUERY---")
         return "retrieve"
 
@@ -59,12 +59,11 @@ def web_search(state):
     Web search based on the re-written question.
 
     Args:
-        state (dict): The current graph state
+        state (dict): The current graph state.
 
     Returns:
-        state (dict): Updates documents key with appended web results
+        dict: Updates the documents key with appended web results.
     """
-
     print("---WEB SEARCH---")
     question = state["question"]
     documents = state["documents"]

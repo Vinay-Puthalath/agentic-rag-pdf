@@ -1,4 +1,7 @@
-""" Represents the state of our StateGraph."""
+"""
+Represents the state of our StateGraph.
+"""
+
 from typing import List
 from typing_extensions import TypedDict
 

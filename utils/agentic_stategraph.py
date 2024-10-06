@@ -6,8 +6,8 @@ from agent.graphstate.graphstate import GraphState
 from agent.retriever.retriever import retrieve
 from agent.retriever.retrieval_grader import grade_documents
 from agent.query.query_rephraser import rewrite_query
-from agent.query.query_classifier import is_trivial_query
-from agent.search.websearch import decide_to_generate, web_search, decide_trivial
+from agent.query.query_classifier import is_trivial_query, decide_trivial
+from agent.search.websearch import decide_to_generate, web_search
 from agent.rag_chain.qa_rag_chain import generate_answer
 
 def create_rag_agent():
@@ -23,29 +23,31 @@ def create_rag_agent():
     agentic_rag = StateGraph(GraphState)
 
     # Define the nodes
-    agentic_rag.add_node("is_trivial_query", is_trivial_query)
-    agentic_rag.add_node("retrieve", retrieve)  # retrieve
-    agentic_rag.add_node("grade_documents", grade_documents)  # grade documents
-    agentic_rag.add_node("rewrite_query", rewrite_query)  # transform_query
-    agentic_rag.add_node("web_search", web_search)  # web search
-    agentic_rag.add_node("generate_answer", generate_answer)  # generate answer
+    agentic_rag.add_node("query_classifier_node", is_trivial_query)
+    agentic_rag.add_node("document_retriever_node", retrieve)  # retrieve
+    agentic_rag.add_node("document_grader_node", grade_documents)  # grade documents
+    agentic_rag.add_node("query_rewriter_node", rewrite_query)  # transform_query
+    agentic_rag.add_node("web_search_node", web_search)  # web search
+    agentic_rag.add_node("answer_generation_node", generate_answer)  # generate answer
 
     # Build graph
-    agentic_rag.set_entry_point("is_trivial_query")
+    agentic_rag.set_entry_point("query_classifier_node")
     agentic_rag.add_conditional_edges(
-        "is_trivial_query",
+        "query_classifier_node",
         decide_trivial,
-        {"generate_answer": "generate_answer", "retrieve": "retrieve"},
+        {"answer_generation_node": "answer_generation_node", 
+         "document_retriever_node": "document_retriever_node"},
     )
-    agentic_rag.add_edge("retrieve", "grade_documents")
+    agentic_rag.add_edge("document_retriever_node", "document_grader_node")
     agentic_rag.add_conditional_edges(
-        "grade_documents",
+        "document_grader_node",
         decide_to_generate,
-        {"rewrite_query": "rewrite_query", "generate_answer": "generate_answer"},
+        {"query_rewriter_node": "query_rewriter_node", 
+         "answer_generation_node": "answer_generation_node"},
     )
-    agentic_rag.add_edge("rewrite_query", "web_search")
-    agentic_rag.add_edge("web_search", "generate_answer")
-    agentic_rag.add_edge("generate_answer", END)
+    agentic_rag.add_edge("query_rewriter_node", "web_search_node")
+    agentic_rag.add_edge("web_search_node", "answer_generation_node")
+    agentic_rag.add_edge("answer_generation_node", END)
 
     # Compile
     agentic_rag = agentic_rag.compile()

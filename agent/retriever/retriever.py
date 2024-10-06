@@ -22,7 +22,7 @@ def retrieve(state):
     Returns:
         dict: Updated state with the retrieved context documents.
     """
-    print("---RETRIEVAL FROM VECTOR DB---")
+    print("---RETRIEVING FROM VECTOR DB---")
     
     embeddings = PineconeEmbeddings(
         model=os.getenv("EMB_MODEL_NAME"),
@@ -40,6 +40,5 @@ def retrieve(state):
     # Retrieve documents based on the question
     retriever = docsearch.as_retriever()
     documents = retriever.invoke(question)
-    
     print("---RETRIEVED---")
     return {"documents": documents, "question": question}

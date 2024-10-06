@@ -56,7 +56,7 @@ def grade_documents(state):
     Returns:
         dict: Updated state with only filtered relevant documents.
     """
-    print("---CHECK DOCUMENT RELEVANCE TO QUESTION---")
+    print("---CHECKING DOCUMENT'S RELEVANCE TO THE QUERY---")
     question = state["question"]
     documents = state["documents"]
     print(f"RETRIEVED {len(documents)} DOCUMENTS")

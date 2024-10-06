@@ -22,37 +22,17 @@ def decide_to_generate(state):
     Returns:
         str: Binary decision for the next node to call.
     """
-    print("---ASSESS GRADED DOCUMENTS---")
     web_search_needed = state["web_search_needed"]
 
     if web_search_needed == "Yes":
         # All documents have been filtered check_relevance
         # We will re-generate a new query
-        print("---DECISION: SOME or ALL DOCUMENTS ARE NOT RELEVANT TO QUESTION, REWRITE QUERY---")
-        return "rewrite_query"
+        print("---DECISION: SOME or ALL DOCUMENTS ARE NOT RELEVANT TO QUESTION, REPHRASING---")
+        return "query_rewriter_node"
     else:
         # We have relevant documents, so generate answer
         print("---DECISION: GENERATE RESPONSE---")
-        return "generate_answer"
-
-def decide_trivial(state):
-    """
-    Determines whether the query is trivial or not.
-
-    Args:
-        state (dict): The current graph state.
-
-    Returns:
-        str: Decision based on the triviality of the query.
-    """
-    is_trivial = state["is_trivial"]
-
-    if is_trivial == "trivial":
-        print("---TRIVIAL QUERY---")
-        return "generate_answer"
-    else:
-        print("---NON TRIVIAL QUERY---")
-        return "retrieve"
+        return "answer_generation_node"
 
 def web_search(state):
     """
@@ -64,7 +44,7 @@ def web_search(state):
     Returns:
         dict: Updates the documents key with appended web results.
     """
-    print("---WEB SEARCH---")
+    print("---SEARCHING THE WEB---")
     question = state["question"]
     documents = state["documents"]
 

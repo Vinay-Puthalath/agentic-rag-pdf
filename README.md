@@ -25,6 +25,8 @@ The app uses:
 The following image illustrates the workflow of the Agentic RAG System:
 
 ![Agentic RAG System Workflow](./agentic_rag_workflow.png)
+![How it looks !](./example_frontend.png)
+![Agentic RAG System Workflow](./example_agentic_flow.png)
 
 
 ## Requirements
@@ -33,7 +35,8 @@ The following image illustrates the workflow of the Agentic RAG System:
 - Docker
 - [Pinecone API Key](https://www.pinecone.io/)
 - [Sarvam Text-to-Speech API Key](https://sarvam.ai/)
-
+- OpenAI api key
+- Tavily api key
 
 ## Document Indexer
 
@@ -67,6 +70,8 @@ python indexer/document_indexer.py --filepath path/to/your/document.pdf
    PINECONE_INDEX_NAME=your_index_name
    PINECONE_NAMESPACE=your_namespace
    SARVAM_API_KEY=your_sarvam_api_key
+   OPENAI_API_KEY=your_openai_api_key
+   TAVILY_API_KEY=your_tavily_key
    ```
 
 3. Build and run the application with Docker Compose:

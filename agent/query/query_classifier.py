@@ -64,3 +64,23 @@ def is_trivial_query(state):
         print(f"Error during classification: {e}")
         # Return a fallback state or log the error
         return {"is_trivial": "unknown", "question": question, "documents": []}
+
+def decide_trivial(state):
+    """
+    Determines whether the query is trivial or not.
+
+    Args:
+        state (dict): The current graph state.
+
+    Returns:
+        node name: Decision on which node to call based on the triviality of the query.
+    """
+    is_trivial = state["is_trivial"]
+
+    if is_trivial == "trivial":
+        print("---TRIVIAL QUERY---")
+
+        return "answer_generation_node"
+    else:
+        print("---NON TRIVIAL QUERY---")
+        return "document_retriever_node"

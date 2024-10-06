@@ -1,8 +1,10 @@
 import gradio as gr
+import logging
 from pydantic import BaseModel
 from fastapi import FastAPI
 from utils.inference.agentic_inference import predict_agentic_rag
 from utils.inference.basic_inference import predict_rag
+
 
 app = FastAPI()
 
@@ -18,7 +20,7 @@ async def predict_api_basic(prompt:Request):
     Handles POST requests for basic RAG inference.
     """
     try:
-        response = await predict_rag(Request.prompt)
+        response = await predict_rag(prompt.prompt)
         return response
     except Exception as e:
         print(f"Error processing request: {e}")
@@ -30,7 +32,7 @@ async def predict_api_agentic(prompt:Request):
     Handles POST requests for smart agentiic RAG inference.
     """
     try:
-        response = await predict_agentic_rag(Request.prompt)
+        response = await predict_agentic_rag(prompt.prompt)
         return response
     except Exception as e:
         print(f"Error processing request: {e}")
@@ -80,6 +82,7 @@ if __name__ == "__main__":
     import uvicorn
     from dotenv import load_dotenv
     import argparse
+    logging.getLogger('asyncio').setLevel(logging.CRITICAL)
 
     load_dotenv()
     parser = argparse.ArgumentParser(description="Select BASIC RAG APP or AGENTIC RAG APP")

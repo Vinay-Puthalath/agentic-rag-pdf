@@ -42,8 +42,8 @@ def rewrite_query(state):
     Returns:
         dict: Updates the 'question' key with a rephrased or re-written question.
     """
-    print("---REWRITE QUERY---")
-    print("  To create a better question for web search...")
+    print("---REPHRASE QUERY---")
+    print("rephrasing query for web search...")
     
     question = state["question"]
     documents = state["documents"]

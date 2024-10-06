@@ -25,6 +25,8 @@ The app uses:
 The following image illustrates the workflow of the Agentic RAG System:
 
 ![Agentic RAG System Workflow](./agentic_rag_workflow.png)
+
+## How it looks !!
 ![How it looks !](./example_frontend.png)
 ![Agentic RAG System Workflow](./example_agentic_flow.png)
 

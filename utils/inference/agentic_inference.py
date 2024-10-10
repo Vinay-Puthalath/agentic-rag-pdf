@@ -1,6 +1,8 @@
 import asyncio
+from pprint import pprint
 from utils.agentic_stategraph import create_rag_agent
 from utils.audio.add_sound import play_sound
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 
 async def predict_agentic_rag(qns:str, history=None)->str:
 
@@ -21,8 +23,8 @@ async def predict_agentic_rag(qns:str, history=None)->str:
         asyncio.set_event_loop(loop)
 
     agentic_rag = create_rag_agent()
-
-    response = agentic_rag.invoke({"question": qns})
+    
+    response = agentic_rag.invoke({"question": qns, "messages": HumanMessage(content=qns)})
     audio_path = play_sound(response['generation'])
     
     return response['generation'], audio_path

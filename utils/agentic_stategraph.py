@@ -8,7 +8,7 @@ from agent.retriever.retrieval_grader import grade_documents
 from agent.query.query_rephraser import rewrite_query
 from agent.query.query_classifier import is_trivial_query, decide_trivial
 from agent.search.websearch import decide_to_generate, web_search
-from agent.rag_chain.qa_rag_chain import generate_answer
+from agent.generator.answer_generator import generate_answer
 
 def create_rag_agent():
 

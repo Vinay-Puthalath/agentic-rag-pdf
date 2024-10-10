@@ -36,12 +36,15 @@ def create_rag_chain():
     But if the question is a trivial one like greetings, respond or greet the user back.
     Do not make up the answer unless it is there in the provided context.
     Give a detailed answer in not more than 450 characters and to the point answer with regard to the question.
-
+    Mention in the answer that it is retrieved from the web if web_search_needed is yes.
     Question:
     {question}
 
     Context:
     {context}
+
+    web_search_needed:
+    {web_search_needed}
 
     Answer:
     """
@@ -58,7 +61,8 @@ def create_rag_chain():
                 itemgetter('context') |
                 RunnableLambda(format_docs)
             ),
-            "question": itemgetter('question')
+            "question": itemgetter('question'),
+            "web_search_needed": itemgetter('web_search_needed')
         } |
         prompt_template |
         chatgpt |
@@ -82,9 +86,10 @@ def generate_answer(state):
     
     question = state["question"]
     documents = state.get("documents", [])
+    web_search_needed = state.get("web_search_needed", "no") 
 
     # RAG generation
-    generation = qa_rag_chain.invoke({"context": documents, "question": question})
+    generation = qa_rag_chain.invoke({"context": documents, "question": question, "web_search_needed":web_search_needed})
     
     return {"documents": documents, "question": question, "generation": generation}
 
